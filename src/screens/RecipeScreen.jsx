@@ -35,7 +35,7 @@ function RecipeScreen() {
                         </ul>
                     </Information>
                     <Information>
-                        <h2>Info</h2>
+                        <h2>Methods</h2>
                         <ol>
                         {
                             currentMeal[0]?.data.methods?.map(method =>
@@ -91,6 +91,6 @@ const FoodImage = styled.img`
 `
 
 const Information = styled.div`
-    padding: 15px;
+    padding: 15px 5px;
     width: 100%;
 `

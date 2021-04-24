@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TinderCard from 'react-tinder-card'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import { userState } from '../atoms/userState'
 import { db } from '../firebase/Firebase'
+import CheckIcon from '@material-ui/icons/Check'
+import CloseIcon from '@material-ui/icons/Close'
 
 function FoodCard({name, description, imageUrl, id}) {
 
     const user = useRecoilValue(userState)
+    const [visisble, setVisisble] = useState(true)
+    const swipeRef = React.createRef();
+    const [direction, setDirection] = useState(false)
 
     const onSwipe = (direction) => {
         if(direction === "left"){
@@ -23,16 +28,47 @@ function FoodCard({name, description, imageUrl, id}) {
         else if(direction === "right"){
             console.log("DISLIKED")
         }
+
+        setVisisble(false)
     }
 
     return (
-        <Card onCardLeftScreen={onSwipe} data-aos="fade-in" preventSwipe={["up", "down"]}>
-            <Image style={{backgroundImage: `url("${imageUrl}")`}} />
-            <Description>
-                <h5 className="mt-2">{name}</h5> 
-                <p>{description.substring(0, 90)}...</p>
-            </Description>
-        </Card>
+        visisble?
+        <Container>
+            <Card flickOnSwipe ref={swipeRef} onCardLeftScreen={onSwipe} data-aos="fade-in" preventSwipe={["up", "down"]}>
+                <Image style={{backgroundImage: `url("${imageUrl}")`}} />
+                <Description>
+                    <h5 className="mt-2">{name}</h5> 
+                    <p>{description.substring(0, 90)}...</p>
+                </Description>
+            </Card>
+            <ButtonContainer>
+                <Button 
+                    className="btn btn-success" 
+                    onClick={() => {
+                        if(!direction){
+                            setDirection(true)
+                            swipeRef?.current.swipe("left")
+                        }
+                    }
+                }>
+                    <CheckIcon />
+                </Button>
+                <Button 
+                    className="btn btn-danger" 
+                    onClick={() => {
+                        if(!direction){
+                            setDirection(true)
+                            swipeRef?.current.swipe("right")
+                        }
+                    }
+                }>
+                    <CloseIcon />
+                </Button>
+            </ButtonContainer>
+            
+        </Container>
+        :null
     )
 }
 
@@ -47,21 +83,25 @@ const Image = styled.img`
     border-top-right-radius: 8px;
 `
 
-const Card = styled(TinderCard)`
-    border: 1px solid lightgrey;
-    border-radius: 8px;
+const Container = styled.div`
     width: 95%;
-    max-width: 400px;
+    width: 400px;
     height: 550px;
-    background-color: #fff;
-    text-align: center;
-    cursor: grab;
     position: absolute;
     left:280px;
     right:0;
     top:0;
     bottom:0;
     margin: auto;
+`
+
+const Card = styled(TinderCard)`
+    height: 100%;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: center;
+    cursor: grab;
 
     @media (max-width: 600px){
         left: 0;
@@ -71,4 +111,17 @@ const Card = styled(TinderCard)`
 const Description = styled.div`
     padding: 10px;
     text-align: left;
+`
+
+const ButtonContainer = styled.div`
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-around;
+`
+
+const Button = styled.button`
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    border: none;
 `

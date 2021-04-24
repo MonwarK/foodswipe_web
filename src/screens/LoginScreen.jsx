@@ -18,6 +18,16 @@ function LoginScreen(){
         .catch(err => alert(err))
     }
 
+    const forgotPassword = () => {
+        var email = prompt("What is your email?");
+
+        auth.sendPasswordResetEmail(
+            email
+        )
+        .then(() => alert("Please check your email."))
+        .catch(err => alert(err))
+    }
+
     return(
         <Container>
             <div className="text-white text-center mb-5">
@@ -41,7 +51,7 @@ function LoginScreen(){
                     <input onChange={e => setPassword(e.target.value)} type="password" className="form-control" />
                 </div>
                 <button onClick={login} className="btn btn-success my-3">Login</button>
-                <button className="btn btn-link">Forgot password?</button>
+                <button onClick={forgotPassword} className="btn btn-link">Forgot password?</button>
             </motion.form>
         </Container>
     )

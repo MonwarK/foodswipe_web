@@ -1,5 +1,17 @@
+body{
+  overflow-x: hidden;
+}
+
 .App {
   text-align: center;
+}
+
+ul, ol{
+  padding: 0 5px;
+}
+
+li{
+  margin: 10px 0;
 }
 
 .App-logo {
@@ -26,6 +38,10 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.mw-600{
+  max-width: 600px;
 }
 
 @keyframes App-logo-spin {
